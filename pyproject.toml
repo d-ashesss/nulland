@@ -1,0 +1,17 @@
+# Project configuration with Poetry as a build system.
+# See https://python-poetry.org/docs/pyproject/
+
+[tool.poetry]
+name = "nulland"
+version = "0.0.0"
+description = "Experimental FastAPI app."
+authors = [
+    "Serhii Mashentsev <d.ashesss@gmail.com>",
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
