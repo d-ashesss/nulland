@@ -1,7 +1,7 @@
 import uuid
 
 from datetime import datetime
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 
 from .schemas import CreateNoteRequest, GetNoteResponse
 
@@ -15,14 +15,14 @@ def read_root():
     return {"status": "HellWorld"}
 
 
-@app.post("/notes", response_model=GetNoteResponse)
+@app.post("/notes", response_model=GetNoteResponse, status_code=status.HTTP_201_CREATED)
 def create_note(note: CreateNoteRequest):
     """
     Create new note
     """
     global notes
     note_obj = {
-        "id": str(uuid.uuid4()),
+        "id": uuid.uuid4(),
         "created_at": datetime.now(),
         "meta": "do not mind me"
     }

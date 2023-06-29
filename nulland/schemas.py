@@ -1,5 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
+from uuid import UUID
 
 
 class BaseNoteSchema(BaseModel):
@@ -10,5 +11,5 @@ class CreateNoteRequest(BaseNoteSchema):
     pass
 
 class GetNoteResponse(BaseNoteSchema):
-    id: str = Field(description="The unique identifier of the note")
+    id: UUID = Field(description="The unique identifier of the note")
     created_at: datetime = Field(description="The time the note was created")
