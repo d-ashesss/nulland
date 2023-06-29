@@ -17,6 +17,9 @@ def read_root():
 
 @app.post("/notes", response_model=GetNoteResponse)
 def create_note(note: CreateNoteRequest):
+    """
+    Create new note
+    """
     global notes
     note_obj = {
         "id": str(uuid.uuid4()),
