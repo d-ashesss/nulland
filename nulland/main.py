@@ -1,9 +1,10 @@
 import uuid
 
 from datetime import datetime
-from fastapi import FastAPI, status
+from fastapi import FastAPI
+from fastapi import status
 
-from .schemas import CreateNoteRequest, GetNoteResponse
+from .schemas import NoteCreate, Note
 
 app = FastAPI()
 
@@ -15,8 +16,8 @@ def read_root():
     return {"status": "HellWorld"}
 
 
-@app.post("/notes", response_model=GetNoteResponse, status_code=status.HTTP_201_CREATED)
-def create_note(note: CreateNoteRequest):
+@app.post("/notes", response_model=Note, status_code=status.HTTP_201_CREATED)
+def create_note(note: NoteCreate):
     """
     Create new note
     """
