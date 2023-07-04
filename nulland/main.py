@@ -3,6 +3,7 @@ import uuid
 from datetime import datetime
 from fastapi import FastAPI
 from fastapi import status
+from fastapi import HTTPException
 
 from .schemas import NoteCreate, Note
 
@@ -37,3 +38,13 @@ def read_notes():
     Get all notes
     """
     return list(notes.values())
+
+
+@app.get("/notes/{note_id}", response_model=Note)
+def get_note(note_id: uuid.UUID):
+    """
+    Get single note by id
+    """
+    if note_id not in notes:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
+    return notes[note_id]
