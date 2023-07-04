@@ -5,7 +5,9 @@ from fastapi import FastAPI
 from fastapi import status
 from fastapi import HTTPException
 
-from .schemas import NoteCreate, Note
+from .schemas import Note
+from .schemas import NoteCreate
+from .schemas import NoteUpdate
 
 app = FastAPI()
 
@@ -50,7 +52,18 @@ def get_note(note_id: uuid.UUID):
     return notes[note_id]
 
 
-@app.delete("/notes/{note_id}", status_code=status.HTTP_200_OK)
+@app.patch("/notes/{note_id}", response_model=Note)
+def update_note(note_id: uuid.UUID, note: NoteUpdate):
+    """
+    Update single note by id
+    """
+    if note_id not in notes:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
+    notes[note_id].update(note.model_dump(exclude_unset=True))
+    return notes[note_id]
+
+
+@app.delete("/notes/{note_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_note(note_id: uuid.UUID):
     """
     Delete single note by id
