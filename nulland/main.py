@@ -21,7 +21,6 @@ def create_note(note: NoteCreate):
     """
     Create new note
     """
-    global notes
     note_obj = {
         "id": uuid.uuid4(),
         "created_at": datetime.now(),
@@ -30,3 +29,11 @@ def create_note(note: NoteCreate):
     note_obj.update(note.model_dump())
     notes[note_obj["id"]] = note_obj
     return note_obj
+
+
+@app.get("/notes", response_model=list[Note])
+def read_notes():
+    """
+    Get all notes
+    """
+    return list(notes.values())
