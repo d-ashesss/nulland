@@ -48,3 +48,14 @@ def get_note(note_id: uuid.UUID):
     if note_id not in notes:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
     return notes[note_id]
+
+
+@app.delete("/notes/{note_id}", status_code=status.HTTP_200_OK)
+def delete_note(note_id: uuid.UUID):
+    """
+    Delete single note by id
+    """
+    if note_id not in notes:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
+    del notes[note_id]
+    return None
