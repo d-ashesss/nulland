@@ -42,7 +42,11 @@ def read_notes():
     return list(notes.values())
 
 
-@app.get("/notes/{note_id}", response_model=Note)
+@app.get(
+    "/notes/{note_id}",
+    responses={status.HTTP_404_NOT_FOUND: {"description": "Note not found"}},
+    response_model=Note,
+)
 def get_note(note_id: uuid.UUID):
     """
     Get single note by id
@@ -52,7 +56,11 @@ def get_note(note_id: uuid.UUID):
     return notes[note_id]
 
 
-@app.patch("/notes/{note_id}", response_model=Note)
+@app.patch(
+    "/notes/{note_id}",
+    responses={status.HTTP_404_NOT_FOUND: {"description": "Note not found"}},
+    response_model=Note,
+)
 def update_note(note_id: uuid.UUID, note: NoteUpdate):
     """
     Update single note by id
@@ -63,7 +71,11 @@ def update_note(note_id: uuid.UUID, note: NoteUpdate):
     return notes[note_id]
 
 
-@app.delete("/notes/{note_id}", status_code=status.HTTP_204_NO_CONTENT)
+@app.delete(
+    "/notes/{note_id}",
+    responses={status.HTTP_404_NOT_FOUND: {"description": "Note not found"}},
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 def delete_note(note_id: uuid.UUID):
     """
     Delete single note by id
