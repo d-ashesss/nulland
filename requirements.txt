@@ -1,4 +1,5 @@
 fastapi >= 0.101.0, < 0.102.0
 gunicorn >= 21.2.0, < 22.0.0
 uvicorn >= 0.23.2, < 0.24.0
-
+sqlalchemy >= 2.0.0, < 2.1.0
+psycopg2-binary

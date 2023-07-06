@@ -1,15 +1,22 @@
 import uuid
 
 from datetime import datetime
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi import status
 from fastapi import HTTPException
 
+from .db.session import init_db, get_db
 from .schemas import Note
 from .schemas import NoteCreate
 from .schemas import NoteUpdate
 
-app = FastAPI()
+
+def lifespan(app):
+    init_db()
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 notes: dict[str, dict] = {}
 
