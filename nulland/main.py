@@ -29,17 +29,11 @@ def read_root():
 
 
 @app.post("/notes", response_model=Note, status_code=status.HTTP_201_CREATED)
-def create_note(note: NoteCreate):
+def create_note(note: NoteCreate, db: Session = Depends(get_db)):
     """
     Create new note
     """
-    note_obj = {
-        "id": uuid.uuid4(),
-        "created_at": datetime.now(),
-        "meta": "do not mind me"
-    }
-    note_obj.update(note.model_dump())
-    notes[note_obj["id"]] = note_obj
+    note_obj = crud_notes.create_note(note, db=db)
     return note_obj
 
 

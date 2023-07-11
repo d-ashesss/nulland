@@ -13,7 +13,7 @@ from nulland.db.base_class import Base
 class Note(Base):
     __tablename__ = "notes"
 
-    id: Mapped[UUID] = mapped_column(primary_key=True, server_default=text("gen_random_uuid()"))
+    id: Mapped[UUID] = mapped_column(primary_key=True)
     title: Mapped[str]
     content: Mapped[str] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
