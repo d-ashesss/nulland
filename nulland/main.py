@@ -4,7 +4,9 @@ from datetime import datetime
 from fastapi import FastAPI, Depends
 from fastapi import status
 from fastapi import HTTPException
+from sqlalchemy.orm import Session
 
+from .crud import crud_notes
 from .db.session import init_db, get_db
 from .schemas import Note
 from .schemas import NoteCreate
@@ -42,11 +44,11 @@ def create_note(note: NoteCreate):
 
 
 @app.get("/notes", response_model=list[Note])
-def read_notes():
+def read_notes(db: Session = Depends(get_db)):
     """
     Get all notes
     """
-    return list(notes.values())
+    return crud_notes.read_notes(db=db)
 
 
 @app.get(
@@ -54,13 +56,14 @@ def read_notes():
     responses={status.HTTP_404_NOT_FOUND: {"description": "Note not found"}},
     response_model=Note,
 )
-def get_note(note_id: uuid.UUID):
+def get_note(note_id: uuid.UUID, db: Session = Depends(get_db)):
     """
     Get single note by id
     """
-    if note_id not in notes:
+    note = crud_notes.get_note_by_id(note_id, db=db)
+    if note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
-    return notes[note_id]
+    return note
 
 
 @app.patch(
