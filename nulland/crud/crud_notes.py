@@ -2,7 +2,7 @@ import uuid
 from sqlalchemy.orm import Session
 
 from nulland.models.notes import Note
-from nulland.schemas import NoteCreate
+from nulland.schemas import NoteCreate, NoteUpdate
 
 
 def create_note(
@@ -34,3 +34,13 @@ def get_note_by_id(note_id: uuid.UUID, db: Session) -> Note:
     Get note by id
     """
     return db.query(Note).filter(Note.id == note_id).first()
+
+def update_note_by_id(db_note: Note, note: NoteUpdate, db: Session) -> Note:
+    """
+    Update note by id
+    """
+    db.query(Note).filter(Note.id == db_note.id).update(note.model_dump(exclude_unset=True))
+    db.commit()
+    db.refresh(db_note)
+    return db_note
+    

@@ -54,10 +54,10 @@ def get_note(note_id: uuid.UUID, db: Session = Depends(get_db)):
     """
     Get single note by id
     """
-    note = crud_notes.get_note_by_id(note_id, db=db)
-    if note is None:
+    db_note = crud_notes.get_note_by_id(note_id, db=db)
+    if db_note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
-    return note
+    return db_note
 
 
 @app.patch(
@@ -65,14 +65,15 @@ def get_note(note_id: uuid.UUID, db: Session = Depends(get_db)):
     responses={status.HTTP_404_NOT_FOUND: {"description": "Note not found"}},
     response_model=Note,
 )
-def update_note(note_id: uuid.UUID, note: NoteUpdate):
+def update_note(note_id: uuid.UUID, note: NoteUpdate, db: Session = Depends(get_db)):
     """
     Update single note by id
     """
-    if note_id not in notes:
+    db_note = crud_notes.get_note_by_id(note_id, db=db)
+    if db_note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
-    notes[note_id].update(note.model_dump(exclude_unset=True))
-    return notes[note_id]
+    crud_notes.update_note_by_id(db_note, note, db=db)
+    return db_note
 
 
 @app.delete(
