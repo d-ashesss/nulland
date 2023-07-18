@@ -36,12 +36,11 @@ def get_note_by_id(note_id: uuid.UUID, db: Session) -> Note:
     return db.query(Note).filter(Note.id == note_id).first()
 
 
-def update_note(db_note: Note, note: NoteUpdate, db: Session) -> Note:
+def update_note(db_note: Note, note: NoteUpdate, db: Session) -> None:
     """
-    Update note by id
+    Update note
     """
     db.query(Note).filter(Note.id == db_note.id).update(note.model_dump(exclude_unset=True))
     db.commit()
     db.refresh(db_note)
-    return db_note
     
