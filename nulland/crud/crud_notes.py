@@ -43,4 +43,11 @@ def update_note(db_note: Note, note: NoteUpdate, db: Session) -> None:
     db.query(Note).filter(Note.id == db_note.id).update(note.model_dump(exclude_unset=True))
     db.commit()
     db.refresh(db_note)
-    
+
+
+def delete_note(db_note: Note, db: Session) -> None:
+    """
+    Delete note
+    """
+    db.query(Note).filter(Note.id == db_note.id).delete()
+    db.commit()

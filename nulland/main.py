@@ -20,8 +20,6 @@ def lifespan(app):
 
 app = FastAPI(lifespan=lifespan)
 
-notes: dict[str, dict] = {}
-
 
 @app.get("/")
 def read_root():
@@ -81,11 +79,12 @@ def update_note(note_id: uuid.UUID, note: NoteUpdate, db: Session = Depends(get_
     responses={status.HTTP_404_NOT_FOUND: {"description": "Note not found"}},
     status_code=status.HTTP_204_NO_CONTENT,
 )
-def delete_note(note_id: uuid.UUID):
+def delete_note(note_id: uuid.UUID, db: Session = Depends(get_db)):
     """
     Delete single note by id
     """
-    if note_id not in notes:
+    db_note = crud_notes.get_note_by_id(note_id, db=db)
+    if db_note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
-    del notes[note_id]
+    crud_notes.delete_note(db_note, db=db)
     return None
