@@ -72,7 +72,7 @@ def update_note(note_id: uuid.UUID, note: NoteUpdate, db: Session = Depends(get_
     db_note = crud_notes.get_note_by_id(note_id, db=db)
     if db_note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
-    crud_notes.update_note_by_id(db_note, note, db=db)
+    crud_notes.update_note(db_note, note, db=db)
     return db_note
 
 

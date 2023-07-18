@@ -35,7 +35,8 @@ def get_note_by_id(note_id: uuid.UUID, db: Session) -> Note:
     """
     return db.query(Note).filter(Note.id == note_id).first()
 
-def update_note_by_id(db_note: Note, note: NoteUpdate, db: Session) -> Note:
+
+def update_note(db_note: Note, note: NoteUpdate, db: Session) -> Note:
     """
     Update note by id
     """
