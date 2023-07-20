@@ -8,9 +8,9 @@ from sqlalchemy.orm import Session
 
 from .crud import crud_notes
 from .db.session import init_db, get_db
-from .schemas import Note
-from .schemas import NoteCreate
-from .schemas import NoteUpdate
+from .schemas.notes import Note
+from .schemas.notes import NoteCreate
+from .schemas.notes import NoteUpdate
 
 
 def lifespan(app):

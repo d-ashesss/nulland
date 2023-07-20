@@ -2,7 +2,7 @@ import uuid
 from sqlalchemy.orm import Session
 
 from nulland.models.notes import Note
-from nulland.schemas import NoteCreate, NoteUpdate
+from nulland.schemas.notes import NoteCreate, NoteUpdate
 
 
 def create_note(
