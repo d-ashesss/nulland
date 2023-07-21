@@ -3,4 +3,8 @@ gunicorn >= 21.2.0, < 22.0.0
 uvicorn >= 0.23.2, < 0.24.0
 sqlalchemy >= 2.0.0, < 3.0.0
 psycopg2-binary
+python-multipart
+python-jose[cryptography] >= 3.3.0, < 4.0.0
+requests >= 2.31.0, < 3.0.0
+authlib >= 1.2.0, < 2.0.0
 pydantic-settings >= 2.0, < 3.0
