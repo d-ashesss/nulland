@@ -2,11 +2,13 @@ import uuid
 from sqlalchemy.orm import Session
 
 from nulland.models.notes import Note
+from nulland.schemas.auth import User
 from nulland.schemas.notes import NoteCreate, NoteUpdate
 
 
-def create_note(
+def create_user_note(
     note: NoteCreate,
+    user: User,
     db: Session,
 ) -> Note:
     """
@@ -14,6 +16,7 @@ def create_note(
     """
     note_obj = Note(
         id=uuid.uuid4(),
+        user_id=user.id,
         **note.model_dump(),
     )
     db.add(note_obj)
@@ -22,18 +25,18 @@ def create_note(
     return note_obj
 
 
-def read_notes(db: Session) -> list[Note]:
+def read_user_notes(user: User, db: Session) -> list[Note]:
     """
     Get all notes
     """
-    return db.query(Note).all()
+    return db.query(Note).filter(Note.user_id == user.id).all()
 
 
-def get_note_by_id(note_id: uuid.UUID, db: Session) -> Note:
+def get_user_note_by_id(note_id: uuid.UUID, user: User, db: Session) -> Note:
     """
     Get note by id
     """
-    return db.query(Note).filter(Note.id == note_id).first()
+    return db.query(Note).filter(Note.id == note_id, Note.user_id == user.id).first()
 
 
 def update_note(db_note: Note, note: NoteUpdate, db: Session) -> None:

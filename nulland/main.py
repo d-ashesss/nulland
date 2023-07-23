@@ -32,7 +32,7 @@ def read_root():
 
 
 @app.post("/token", include_in_schema=False)
-async def get_token(settings: Annotated[Settings, Depends(get_settings)], req: TokenRequest = Depends()):
+async def get_token(settings: Annotated[Settings, Depends(get_settings)], req: Annotated[TokenRequest, Depends()]):
     oauth_sess = OAuth2Session(
         client_id=req.client_id,
         client_secret=req.client_secret,
@@ -52,20 +52,27 @@ async def get_token(settings: Annotated[Settings, Depends(get_settings)], req: T
 
 
 @app.post("/notes", response_model=Note, status_code=status.HTTP_201_CREATED)
-def create_note(note: NoteCreate, db: Session = Depends(get_db)):
+def create_note(
+    note: NoteCreate,
+    user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
+):
     """
     Create new note
     """
-    note_obj = crud_notes.create_note(note, db=db)
+    note_obj = crud_notes.create_user_note(note, user, db=db)
     return note_obj
 
 
 @app.get("/notes", response_model=list[Note])
-def read_notes(db: Session = Depends(get_db)):
+def read_notes(
+    user: Annotated[User, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+):
     """
     Get all notes
     """
-    return crud_notes.read_notes(db=db)
+    return crud_notes.read_user_notes(user, db=db)
 
 
 @app.get(
@@ -73,11 +80,15 @@ def read_notes(db: Session = Depends(get_db)):
     responses={status.HTTP_404_NOT_FOUND: {"description": "Note not found"}},
     response_model=Note,
 )
-def get_note(note_id: uuid.UUID, db: Session = Depends(get_db)):
+def get_note(
+    note_id: uuid.UUID,
+    user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
+):
     """
     Get single note by id
     """
-    db_note = crud_notes.get_note_by_id(note_id, db=db)
+    db_note = crud_notes.get_user_note_by_id(note_id, user, db=db)
     if db_note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
     return db_note
@@ -88,11 +99,16 @@ def get_note(note_id: uuid.UUID, db: Session = Depends(get_db)):
     responses={status.HTTP_404_NOT_FOUND: {"description": "Note not found"}},
     response_model=Note,
 )
-def update_note(note_id: uuid.UUID, note: NoteUpdate, db: Session = Depends(get_db)):
+def update_note(
+    note_id: uuid.UUID,
+    note: NoteUpdate,
+    user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
+):
     """
     Update single note by id
     """
-    db_note = crud_notes.get_note_by_id(note_id, db=db)
+    db_note = crud_notes.get_user_note_by_id(note_id, user, db=db)
     if db_note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
     crud_notes.update_note(db_note, note, db=db)
@@ -104,11 +120,15 @@ def update_note(note_id: uuid.UUID, note: NoteUpdate, db: Session = Depends(get_
     responses={status.HTTP_404_NOT_FOUND: {"description": "Note not found"}},
     status_code=status.HTTP_204_NO_CONTENT,
 )
-def delete_note(note_id: uuid.UUID, db: Session = Depends(get_db)):
+def delete_note(
+    note_id: uuid.UUID,
+    user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
+):
     """
     Delete single note by id
     """
-    db_note = crud_notes.get_note_by_id(note_id, db=db)
+    db_note = crud_notes.get_user_note_by_id(note_id, user, db=db)
     if db_note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
     crud_notes.delete_note(db_note, db=db)
