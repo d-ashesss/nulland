@@ -15,6 +15,7 @@ from nulland.settings import Settings, get_settings
 
 @lru_cache()
 def get_oauth2_scheme() -> OAuth2AuthorizationCodeBearer:
+    """Creates OAuth authorization scheme."""
     settings = get_settings()
     return OAuth2AuthorizationCodeBearer(
         authorizationUrl=str(settings.auth_authorization_endpoint),
@@ -29,6 +30,7 @@ def get_oauth2_scheme() -> OAuth2AuthorizationCodeBearer:
 
 @lru_cache()
 def get_public_key(settings: Annotated[Settings, Depends(get_settings)]):
+    """Loads the public key from the OIDC provider."""
     return requests.get(settings.auth_jwks_url).json()
 
 
@@ -36,6 +38,7 @@ def get_current_user(
         token: Annotated[str, Depends(get_oauth2_scheme())],
         key: Annotated[dict, Depends(get_public_key)],
 ):
+    """Parses the JWT token and returns the user object constructed from it."""
     try:
         claims = jwt.decode(token, key, options={"verify_aud": False})
     except JWTError:

@@ -19,6 +19,7 @@ from .settings import Settings, get_settings
 
 
 def lifespan(app):
+    """Initialize the database on startup."""
     init_db()
     yield
 
@@ -26,13 +27,21 @@ def lifespan(app):
 app = FastAPI(lifespan=lifespan)
 
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 def read_root():
+    """Simple status check endpoint."""
     return {"status": "HellWorld"}
 
 
 @app.post("/token", include_in_schema=False)
 async def get_token(settings: Annotated[Settings, Depends(get_settings)], req: Annotated[TokenRequest, Depends()]):
+    """Part of the OAuth2 flow.
+
+    This endpoint is used to exchange the authorization code for an access token from the OAuth provider.
+
+    Since it is supposed that authentication and token aquiring will be fully managed by the external API user
+    this endpoint exists only to support authentication for OpenAPI UI at /docs.
+    """
     oauth_sess = OAuth2Session(
         client_id=req.client_id,
         client_secret=req.client_secret,
@@ -57,9 +66,7 @@ def create_note(
     user: Annotated[User, Depends(get_current_user)],
     db: Annotated[Session, Depends(get_db)],
 ):
-    """
-    Create new note
-    """
+    """Create a note owned by the current user."""
     note_obj = crud_notes.create_user_note(note, user, db=db)
     return note_obj
 
@@ -69,9 +76,7 @@ def read_notes(
     user: Annotated[User, Depends(get_current_user)],
     db: Session = Depends(get_db),
 ):
-    """
-    Get all notes
-    """
+    """Get all notes owned by the current user."""
     return crud_notes.read_user_notes(user, db=db)
 
 
@@ -85,9 +90,7 @@ def get_note(
     user: Annotated[User, Depends(get_current_user)],
     db: Annotated[Session, Depends(get_db)],
 ):
-    """
-    Get single note by id
-    """
+    """Get single note by id."""
     db_note = crud_notes.get_user_note_by_id(note_id, user, db=db)
     if db_note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
@@ -105,9 +108,7 @@ def update_note(
     user: Annotated[User, Depends(get_current_user)],
     db: Annotated[Session, Depends(get_db)],
 ):
-    """
-    Update single note by id
-    """
+    """Update single note by id."""
     db_note = crud_notes.get_user_note_by_id(note_id, user, db=db)
     if db_note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
@@ -125,9 +126,7 @@ def delete_note(
     user: Annotated[User, Depends(get_current_user)],
     db: Annotated[Session, Depends(get_db)],
 ):
-    """
-    Delete single note by id
-    """
+    """Delete single note by id."""
     db_note = crud_notes.get_user_note_by_id(note_id, user, db=db)
     if db_note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
