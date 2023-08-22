@@ -18,7 +18,7 @@ def get_oauth2_scheme() -> OAuth2AuthorizationCodeBearer:
     """Creates OAuth authorization scheme."""
     settings = get_settings()
     return OAuth2AuthorizationCodeBearer(
-        authorizationUrl=str(settings.auth_authorization_endpoint),
+        authorizationUrl=str(settings.auth.authorization_endpoint),
         tokenUrl="token",
         scopes={
             "openid": "(required) indicate the intent to use OIDC",
@@ -31,7 +31,7 @@ def get_oauth2_scheme() -> OAuth2AuthorizationCodeBearer:
 @lru_cache()
 def get_public_key(settings: Annotated[Settings, Depends(get_settings)]):
     """Loads the public key from the OIDC provider."""
-    return requests.get(settings.auth_jwks_url).json()
+    return requests.get(settings.auth.jwks_uri).json()
 
 
 def get_current_user(

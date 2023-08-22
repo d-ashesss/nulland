@@ -48,7 +48,7 @@ async def get_token(settings: Annotated[Settings, Depends(get_settings)], req: A
     )
     try:
         token = oauth_sess.fetch_token(
-            settings.auth_token_endpoint,
+            settings.auth.token_endpoint,
             grant_type=req.grant_type,
             code=req.code,
             redirect_uri=req.redirect_uri,

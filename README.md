@@ -8,7 +8,7 @@ REST API backend for note taking application.
 
 ## Authentication
 
-The API handles authentication using JWT tokens. The token is passed in the `Authorization` header as a bearer token. It is possible to use OIDC service like 0Auth to obtain the token and then use it with this API. It is required to provide the app with the URL to the OIDC public key in the `AUTH_JWKS_URL` environment variable to make it able to verify the token.
+The API handles authentication using JWT tokens. The token is passed in the `Authorization` header as a bearer token. It is possible to use OIDC service like [Auth0](https://auth0.com) to obtain the token and then use it with this API. It is required to provide the app with the URL to the OIDC discovery documents in the `AUTH_OPENID_CONFIGURATION_URL` environment variable.
 
 ## Database
 
