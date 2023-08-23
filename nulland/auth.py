@@ -13,19 +13,16 @@ from nulland.schemas.auth import User
 from nulland.settings import Settings, get_settings
 
 
-@lru_cache()
-def get_oauth2_scheme() -> OAuth2AuthorizationCodeBearer:
-    """Creates OAuth authorization scheme."""
-    settings = get_settings()
-    return OAuth2AuthorizationCodeBearer(
-        authorizationUrl=str(settings.auth.authorization_endpoint),
-        tokenUrl="token",
-        scopes={
-            "openid": "(required) indicate the intent to use OIDC",
-            "profile": "(required) include user personal details",
-            "email": "(required) include user's email address",
-        },
-    )
+_settings = get_settings()
+_oauth2_scheme = OAuth2AuthorizationCodeBearer(
+    authorizationUrl=str(_settings.auth.authorization_endpoint),
+    tokenUrl="token",
+    scopes={
+        "openid": "(required) indicate the intent to use OIDC",
+        "profile": "(required) include user personal details",
+        "email": "(required) include user's email address",
+    },
+)
 
 
 @lru_cache()
@@ -35,7 +32,7 @@ def get_public_key(settings: Annotated[Settings, Depends(get_settings)]):
 
 
 def get_current_user(
-        token: Annotated[str, Depends(get_oauth2_scheme())],
+        token: Annotated[str, Depends(_oauth2_scheme)],
         key: Annotated[dict, Depends(get_public_key)],
 ):
     """Parses the JWT token and returns the user object constructed from it."""
