@@ -1,7 +1,7 @@
 import requests
 
 from functools import lru_cache
-from pydantic import PostgresDsn, HttpUrl, BaseModel, Field
+from pydantic import PostgresDsn, HttpUrl, BaseModel
 from pydantic_settings import BaseSettings
 
 
@@ -14,9 +14,9 @@ class AuthSettings(BaseModel):
         jwks_uri: The OIDC JWKS URL
     """
 
-    authorization_endpoint: HttpUrl
-    token_endpoint: HttpUrl
-    jwks_uri: HttpUrl
+    authorization_endpoint: HttpUrl | None = None
+    token_endpoint: HttpUrl | None = None
+    jwks_uri: HttpUrl | None = None
 
 class Settings(BaseSettings):
     """Application settings.
@@ -40,7 +40,9 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:
     """Load application settings as a singleton."""
     settings = Settings()
-    if not settings.auth and settings.auth_openid_configuration_url:
-        oidc_conf = requests.get(settings.auth_openid_configuration_url).json()
-        settings.auth = AuthSettings(**oidc_conf)
+    if not settings.auth:
+        settings.auth = AuthSettings()
+        if settings.auth_openid_configuration_url:
+            oidc_conf = requests.get(settings.auth_openid_configuration_url).json()
+            settings.auth = AuthSettings(**oidc_conf)
     return settings
