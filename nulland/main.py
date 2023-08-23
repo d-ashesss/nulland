@@ -1,11 +1,13 @@
 from fastapi import FastAPI
+from contextlib import asynccontextmanager
 
 from .db.session import init_db
 from .routes import auth
 from .routes import notes
 
 
-def lifespan(app):
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     """Initialize the database on startup."""
     init_db()
     yield
