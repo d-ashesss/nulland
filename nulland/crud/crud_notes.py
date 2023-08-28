@@ -38,6 +38,7 @@ def update_note(db_note: Note, note: NoteUpdate, db: Session) -> None:
     """Save changes to a note into the database."""
     db.query(Note).filter(Note.id == db_note.id).update(note.model_dump(exclude_unset=True))
     db.commit()
+    db.add(db_note)
     db.refresh(db_note)
 
 
