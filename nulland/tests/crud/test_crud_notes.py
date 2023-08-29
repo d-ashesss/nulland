@@ -31,7 +31,6 @@ class TestCrudNotes(TestCase):
         self.db.commit()
         self.db.refresh(note)
         return note
-    
 
     def test_create_user_note(self):
         note = NoteCreate(
@@ -66,7 +65,7 @@ class TestCrudNotes(TestCase):
         )
         self.assertIsInstance(notes, list)
         self.assertEqual(len(notes), 1)
-    
+
     def test_get_user_note_by_id(self):
         note = self._insert_note()
         self.db.expunge_all()
@@ -113,7 +112,7 @@ class TestCrudNotes(TestCase):
         self.assertEqual(note_obj.title, note_update.title)
         self.assertEqual(note_obj.content, note.content)
         self.assertEqual(note.title, note_update.title)
-    
+
     def test_update_note_content(self):
         note = self._insert_note()
         self.db.expunge_all()

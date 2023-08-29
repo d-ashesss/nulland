@@ -31,6 +31,7 @@ from nulland.main import app
 def override_get_public_key():
     return jwk_public_key.to_dict()
 
+
 app.dependency_overrides[get_public_key] = override_get_public_key
 
 
@@ -46,6 +47,7 @@ session.init_db()
 @pytest.fixture(scope="session")
 def db():
     return session.SessionLocal()
+
 
 @pytest.fixture
 def client():

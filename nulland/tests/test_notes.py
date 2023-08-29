@@ -22,7 +22,6 @@ class TestNotes(unittest.TestCase):
         self.db = db
         self.private_key = private_key
 
-
     def insert_note(self, user_id) -> Note:
         note = Note(
             id=user_id,
@@ -34,7 +33,6 @@ class TestNotes(unittest.TestCase):
         self.db.commit()
         self.db.refresh(note)
         return note
-
 
     def test_unauthorized(self):
         response = self.client.get("/notes")

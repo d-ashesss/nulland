@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings
 
 class AuthSettings(BaseModel):
     """Authentication settings retrieved from OIDC configuration URL.
-    
+
     Attributes:
         authorization_endpoint: The OIDC authorization endpoint
         token_endpoint: The OIDC token endpoint
@@ -18,9 +18,10 @@ class AuthSettings(BaseModel):
     token_endpoint: HttpUrl | None = None
     jwks_uri: HttpUrl | None = None
 
+
 class Settings(BaseSettings):
     """Application settings.
-    
+
     Attributes:
         auth_openid_configuration_url: The URL of the OIDC configuration endpoint
         database_uri: The URI of the PostgreSQL database
