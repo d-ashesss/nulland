@@ -1,12 +1,10 @@
+authlib >= 1.2.0, < 2.0.0
 fastapi >= 0.101.0, < 0.102.0
 gunicorn >= 21.2.0, < 22.0.0
-uvicorn >= 0.23.2, < 0.24.0
-sqlalchemy >= 2.0.0, < 3.0.0
+httpx >= 0.24.1, < 0.25.0
 psycopg2-binary
-python-multipart
-python-jose[cryptography] >= 3.3.0, < 4.0.0
-requests >= 2.31.0, < 3.0.0
-authlib >= 1.2.0, < 2.0.0
 pydantic-settings >= 2.0, < 3.0
-httpx == 0.24.1
-pytest >= 7.4, < 8.0
+python-jose[cryptography] >= 3.3.0, < 4.0.0
+python-multipart
+sqlalchemy >= 2.0.0, < 3.0.0
+uvicorn >= 0.23.2, < 0.24.0

@@ -1,4 +1,4 @@
-import requests
+import httpx
 
 from functools import lru_cache
 from pydantic import PostgresDsn, HttpUrl, BaseModel
@@ -44,6 +44,6 @@ def get_settings() -> Settings:
     if not settings.auth:
         settings.auth = AuthSettings()
         if settings.auth_openid_configuration_url:
-            oidc_conf = requests.get(settings.auth_openid_configuration_url).json()
+            oidc_conf = httpx.get(str(settings.auth_openid_configuration_url)).json()
             settings.auth = AuthSettings(**oidc_conf)
     return settings

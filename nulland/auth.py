@@ -1,4 +1,4 @@
-import requests
+import httpx
 
 from fastapi import Depends
 from fastapi import HTTPException
@@ -28,7 +28,7 @@ _oauth2_scheme = OAuth2AuthorizationCodeBearer(
 @lru_cache()
 def get_public_key(settings: Annotated[Settings, Depends(get_settings)]):
     """Loads the public key from the OIDC provider."""
-    return requests.get(settings.auth.jwks_uri).json()
+    return httpx.get(str(settings.auth.jwks_uri)).json()
 
 
 def get_current_user(
