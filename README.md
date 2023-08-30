@@ -14,3 +14,7 @@ The API handles authentication using JWT tokens. The token is passed in the `Aut
 ## Database
 
 The API uses PostgreSQL database. The connection string must be passed in the `DATABASE_URL` environment variable.
+
+## Logging
+
+To get the log format compatible with Google Cloud structured logging, set the `LOG_FORMAT` environment variable to `json`.

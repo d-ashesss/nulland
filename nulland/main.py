@@ -4,11 +4,13 @@ from contextlib import asynccontextmanager
 from .db.session import init_db
 from .routes import auth
 from .routes import notes
+from .logging import init_logging
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Initialize the database on startup."""
+async def lifespan(_: FastAPI):
+    """ Application startup initialization."""
+    init_logging()
     init_db()
     yield
 

@@ -1,3 +1,5 @@
+import logging
+
 from authlib.integrations.httpx_client import AsyncOAuth2Client
 from fastapi import APIRouter, Depends
 from fastapi import HTTPException
@@ -8,6 +10,7 @@ from nulland.schemas.auth import TokenRequest, TokenResponse
 from nulland.settings import Settings, get_settings
 
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
@@ -32,7 +35,8 @@ async def get_token(settings: Annotated[Settings, Depends(get_settings)], req: A
                 code=req.code,
                 redirect_uri=req.redirect_uri,
             )
-        except Exception:
+        except Exception as exc:
+            logger.error("Failed to fetch auth token: %s", exc)
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unable to fetch the token")
         if "id_token" not in token:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Received invalid token")

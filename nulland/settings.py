@@ -1,8 +1,12 @@
 import httpx
 
+from enum import StrEnum
 from functools import lru_cache
 from pydantic import PostgresDsn, HttpUrl, BaseModel
 from pydantic_settings import BaseSettings
+
+
+LogFormat = StrEnum("LogFormat", ["DEFAULT", "JSON"])
 
 
 class AuthSettings(BaseModel):
@@ -32,6 +36,8 @@ class Settings(BaseSettings):
     auth: AuthSettings | None = None
 
     database_uri: PostgresDsn
+
+    log_format: LogFormat = "default"
 
     def __hash__(self):
         return 0
