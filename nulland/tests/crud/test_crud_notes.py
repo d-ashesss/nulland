@@ -33,19 +33,19 @@ class TestCrudNotes(TestCase):
         return note
 
     def test_create_user_note(self):
-        note = NoteCreate(
+        note_in = NoteCreate(
             title="Test Note",
             content="The text of test note.",
         )
         note_obj = crud.create_user_note(
-            note=note,
+            note=note_in,
             user=self.user,
             db=self.db,
         )
         self.assertIsInstance(note_obj, Note)
         self.assertIsNotNone(note_obj.id)
-        self.assertEqual(note_obj.title, note.title)
-        self.assertEqual(note_obj.content, note.content)
+        self.assertEqual(note_obj.title, note_in.title)
+        self.assertEqual(note_obj.content, note_in.content)
 
     def test_read_user_no_notes(self):
         notes = crud.read_user_notes(
@@ -67,18 +67,18 @@ class TestCrudNotes(TestCase):
         self.assertEqual(len(notes), 1)
 
     def test_get_user_note_by_id(self):
-        note = self._insert_note()
+        note_db = self._insert_note()
         self.db.expunge_all()
 
         note_obj = crud.get_user_note_by_id(
-            note_id=note.id,
+            note_id=note_db.id,
             user=self.user,
             db=self.db,
         )
         self.assertIsInstance(note_obj, Note)
-        self.assertEqual(note_obj.id, note.id)
-        self.assertEqual(note_obj.title, note.title)
-        self.assertEqual(note_obj.content, note.content)
+        self.assertEqual(note_obj.id, note_db.id)
+        self.assertEqual(note_obj.title, note_db.title)
+        self.assertEqual(note_obj.content, note_db.content)
 
     def test_get_user_note_by_id_not_found(self):
         note_obj = crud.get_user_note_by_id(
@@ -89,67 +89,67 @@ class TestCrudNotes(TestCase):
         self.assertIsNone(note_obj)
 
     def test_update_note_title(self):
-        note = self._insert_note()
+        note_db = self._insert_note()
         self.db.expunge_all()
 
         note_update = NoteUpdate(
             title="Updated Test Note",
         )
         crud.update_note(
-            db_note=note,
+            db_note=note_db,
             note=note_update,
             db=self.db,
         )
         self.db.expunge_all()
 
         note_obj = crud.get_user_note_by_id(
-            note_id=note.id,
+            note_id=note_db.id,
             user=self.user,
             db=self.db,
         )
         self.assertIsInstance(note_obj, Note)
-        self.assertEqual(note_obj.id, note.id)
+        self.assertEqual(note_obj.id, note_db.id)
         self.assertEqual(note_obj.title, note_update.title)
-        self.assertEqual(note_obj.content, note.content)
-        self.assertEqual(note.title, note_update.title)
+        self.assertEqual(note_obj.content, note_db.content)
+        self.assertEqual(note_db.title, note_update.title)
 
     def test_update_note_content(self):
-        note = self._insert_note()
+        note_db = self._insert_note()
         self.db.expunge_all()
 
         note_update = NoteUpdate(
             content="Updated content.",
         )
         crud.update_note(
-            db_note=note,
+            db_note=note_db,
             note=note_update,
             db=self.db,
         )
         self.db.expunge_all()
 
         note_obj = crud.get_user_note_by_id(
-            note_id=note.id,
+            note_id=note_db.id,
             user=self.user,
             db=self.db,
         )
         self.assertIsInstance(note_obj, Note)
-        self.assertEqual(note_obj.id, note.id)
-        self.assertEqual(note_obj.title, note.title)
+        self.assertEqual(note_obj.id, note_db.id)
+        self.assertEqual(note_obj.title, note_db.title)
         self.assertEqual(note_obj.content, note_update.content)
-        self.assertEqual(note.content, note_update.content)
+        self.assertEqual(note_db.content, note_update.content)
 
     def test_delete_note(self):
-        note = self._insert_note()
+        note_db = self._insert_note()
         self.db.expunge_all()
 
         crud.delete_note(
-            db_note=note,
+            db_note=note_db,
             db=self.db,
         )
         self.db.expunge_all()
 
         note_obj = crud.get_user_note_by_id(
-            note_id=note.id,
+            note_id=note_db.id,
             user=self.user,
             db=self.db,
         )
