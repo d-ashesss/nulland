@@ -1,19 +1,21 @@
-from fastapi.testclient import TestClient
-from fastapi import status
-from sqlalchemy.orm import Session
-import unittest
 import pytest
+import unittest
 import uuid
 
+from fastapi import status
+from fastapi.testclient import TestClient
+from sqlalchemy.orm import Session
+
 from nulland.models.notes import Note
-from nulland.tests.utils.auth import auth_headers
+from nulland.tests.utils.auth import auth_headers, jwk_public_key
 
 
 class TestNotes(unittest.TestCase):
     @pytest.fixture(autouse=True)
-    def setup(self, client: TestClient, db: Session):
+    def setup(self, client: TestClient, db: Session, monkeypatch: pytest.MonkeyPatch):
         self.client = client
         self.db = db
+        monkeypatch.setattr("nulland.auth.get_public_key", lambda: jwk_public_key)
 
     def _insert_note(self, user_id) -> Note:
         note = Note(
