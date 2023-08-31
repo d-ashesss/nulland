@@ -11,12 +11,12 @@ from pydantic import ValidationError
 from typing import Annotated
 
 from nulland.schemas.auth import User
-from nulland.settings import Settings, get_settings
+from nulland.config import settings
+
 
 _logger = logging.getLogger(__name__)
-_settings = get_settings()
 _oauth2_scheme = OAuth2AuthorizationCodeBearer(
-    authorizationUrl=str(_settings.auth.authorization_endpoint),
+    authorizationUrl=str(settings.auth.authorization_endpoint),
     tokenUrl="token",
     scopes={
         "openid": "(required) indicate the intent to use OIDC",
@@ -27,7 +27,7 @@ _oauth2_scheme = OAuth2AuthorizationCodeBearer(
 
 
 @lru_cache()
-def get_public_key(settings: Annotated[Settings, Depends(get_settings)]):
+def get_public_key():
     """Loads the public key from the OIDC provider."""
     _logger.info("Loading public key from %s", settings.auth.jwks_uri)
     return httpx.get(str(settings.auth.jwks_uri)).json()

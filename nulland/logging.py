@@ -2,11 +2,10 @@ import logging
 
 from pythonjsonlogger import jsonlogger
 
-from .settings import get_settings, LogFormat
+from .config import settings, LogFormat
 
 
 def init_logging():
-    settings = get_settings()
     log_handlers = None
     if settings.log_format == LogFormat.JSON:
         handler = logging.StreamHandler()

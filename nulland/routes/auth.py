@@ -7,7 +7,7 @@ from fastapi import status
 from typing import Annotated
 
 from nulland.schemas.auth import TokenRequest, TokenResponse
-from nulland.settings import Settings, get_settings
+from nulland.config import settings
 
 
 logger = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ router = APIRouter()
 
 
 @router.post("/token", include_in_schema=False)
-async def get_token(settings: Annotated[Settings, Depends(get_settings)], req: Annotated[TokenRequest, Depends()]):
+async def get_token(req: Annotated[TokenRequest, Depends()]):
     """Part of the OAuth2 flow.
 
     This endpoint is used to exchange the authorization code for an access token from the OAuth provider.

@@ -2,10 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from ._base import Base
-from nulland.settings import get_settings
+from nulland.config import settings
 
 
-settings = get_settings()
 engine = create_engine(str(settings.database_uri))
 SessionLocal = sessionmaker(autoflush=False, bind=engine)
 

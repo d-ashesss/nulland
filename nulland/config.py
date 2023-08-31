@@ -1,7 +1,6 @@
 import httpx
 
 from enum import StrEnum
-from functools import lru_cache
 from pydantic import PostgresDsn, HttpUrl, BaseModel
 from pydantic_settings import BaseSettings
 
@@ -32,7 +31,6 @@ class Settings(BaseSettings):
     """
 
     auth_openid_configuration_url: HttpUrl | None = None
-
     auth: AuthSettings | None = None
 
     database_uri: PostgresDsn
@@ -43,13 +41,9 @@ class Settings(BaseSettings):
         return 0
 
 
-@lru_cache()
-def get_settings() -> Settings:
-    """Load application settings as a singleton."""
-    settings = Settings()
-    if not settings.auth:
-        settings.auth = AuthSettings()
-        if settings.auth_openid_configuration_url:
-            oidc_conf = httpx.get(str(settings.auth_openid_configuration_url)).json()
-            settings.auth = AuthSettings(**oidc_conf)
-    return settings
+settings = Settings()
+if not settings.auth:
+    settings.auth = AuthSettings()
+    if settings.auth_openid_configuration_url:
+        oidc_conf = httpx.get(str(settings.auth_openid_configuration_url)).json()
+        settings.auth = AuthSettings(**oidc_conf)
