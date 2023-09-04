@@ -35,6 +35,8 @@ class Settings(BaseSettings):
 
     database_uri: PostgresDsn
 
+    cors_allowed_origins: list[str] = ["*"]
+
     log_format: LogFormat = "default"
 
     def __hash__(self):

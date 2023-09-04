@@ -18,3 +18,8 @@ The API uses PostgreSQL database. The connection string must be passed in the `D
 ## Logging
 
 To get the log format compatible with Google Cloud structured logging, set the `LOG_FORMAT` environment variable to `json`.
+
+## CORS
+
+To configure CORS to allow access from a specific domain, set the `CORS_ALLOWED_ORIGINS` environment variable to JSON-formatted list of allowed URLs,
+for example `CORS_ALLOWED_ORIGINS='["http://localhost:5000"]'`.
