@@ -18,7 +18,15 @@ async def lifespan(_: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    title="Nulland",
+    summary="Note-taking REST API with Python and FastAPI.",
+    version="0.1.0",
+    license_info={
+        "name": "MIT License",
+    },
+    lifespan=lifespan
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_allowed_origins,
@@ -38,6 +46,8 @@ def read_root():
 
 @app.middleware("http")
 async def generic_exception_handler(request, call_next) -> JSONResponse:
+    """Catching all unexpected in middleware because FastAPI/Starlette error handling mechanism
+    still pushes them through event if handled properly leading to excessive exception logging."""
     try:
         return await call_next(request)
     except Exception as exc:

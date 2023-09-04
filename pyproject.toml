@@ -4,9 +4,9 @@
 [tool.poetry]
 name = "nulland"
 version = "0.1.0"
-description = "Experimental FastAPI app."
+description = "Note-taking REST API with Python and FastAPI."
 authors = [
-    "Serhii Mashentsev <d.ashesss@gmail.com>",
+    "Serhii Mashentsev <serhii@mashentsev.me>",
 ]
 
 [tool.poetry.dependencies]

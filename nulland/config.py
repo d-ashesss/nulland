@@ -27,7 +27,10 @@ class Settings(BaseSettings):
 
     Attributes:
         auth_openid_configuration_url: The URL of the OIDC configuration endpoint
+        auth: The authentication settings
         database_uri: The URI of the PostgreSQL database
+        cors_allowed_origins: The list of allowed CORS origins
+        log_format: The log format
     """
 
     auth_openid_configuration_url: HttpUrl | None = None

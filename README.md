@@ -7,19 +7,25 @@ REST API backend for note taking application.
 [![latest tag](https://img.shields.io/github/v/tag/d-ashesss/nulland?include_prereleases&sort=semver)](https://github.com/d-ashesss/nulland/tags)
 ![feline reference](https://img.shields.io/badge/may%20contain%20cat%20fur-%F0%9F%90%88-blueviolet)
 
-## Authentication
+## Configuration
+
+### Authentication
 
 The API handles authentication using JWT tokens. The token is passed in the `Authorization` header as a bearer token. It is possible to use OIDC service like [Auth0](https://auth0.com) to obtain the token and then use it with this API. It is required to provide the app with the URL to the OIDC discovery documents in the `AUTH_OPENID_CONFIGURATION_URL` environment variable.
 
-## Database
+### Database
 
 The API uses PostgreSQL database. The connection string must be passed in the `DATABASE_URL` environment variable.
 
-## Logging
+### Logging
 
 To get the log format compatible with Google Cloud structured logging, set the `LOG_FORMAT` environment variable to `json`.
 
-## CORS
+### CORS
 
 To configure CORS to allow access from a specific domain, set the `CORS_ALLOWED_ORIGINS` environment variable to JSON-formatted list of allowed URLs,
 for example `CORS_ALLOWED_ORIGINS='["http://localhost:5000"]'`.
+
+## API documentation
+
+OpenAPI documentation is available at `/docs` endpoint.
