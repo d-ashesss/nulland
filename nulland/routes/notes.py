@@ -13,6 +13,7 @@ from nulland.schemas.auth import User
 from nulland.schemas.notes import Note
 from nulland.schemas.notes import NoteCreate
 from nulland.schemas.notes import NoteUpdate
+from nulland import events
 
 
 router = APIRouter()
@@ -26,6 +27,7 @@ def create_note(
 ):
     """Create a note owned by the current user."""
     note_obj = crud_notes.create_user_note(note, user, db=db)
+    events.emit_user_action("notes.created", {"note_id": note_obj.id, "user_id": user.id})
     return note_obj
 
 
@@ -71,6 +73,7 @@ def update_note(
     if db_note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
     crud_notes.update_note(db_note, note, db=db)
+    events.emit_user_action("notes.updated", {"note_id": db_note.id, "user_id": user.id})
     return db_note
 
 
@@ -89,4 +92,5 @@ def delete_note(
     if db_note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
     crud_notes.delete_note(db_note, db=db)
+    events.emit_user_action("notes.deleted", {"note_id": db_note.id, "user_id": user.id})
     return None
