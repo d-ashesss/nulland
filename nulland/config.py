@@ -6,6 +6,7 @@ from pydantic_settings import BaseSettings
 
 
 LogFormat = StrEnum("LogFormat", ["DEFAULT", "JSON"])
+EventProducer = StrEnum("EventProducer", ["NONE", "STDOUT", "KAFKA"])
 
 
 class AuthSettings(BaseModel):
@@ -41,6 +42,8 @@ class Settings(BaseSettings):
     cors_allowed_origins: list[str] = ["*"]
 
     log_format: LogFormat = "default"
+
+    event_producer: EventProducer = "stdout"
 
     def __hash__(self):
         return 0

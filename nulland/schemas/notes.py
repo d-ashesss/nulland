@@ -24,3 +24,7 @@ class Note(BaseNote):
     created_at: datetime = Field(description="The time the note was created.")
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class NoteLog(Note):
+    user_id: str = Field(description="The user who created the note.")
