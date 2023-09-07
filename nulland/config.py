@@ -3,10 +3,10 @@ import httpx
 from enum import StrEnum
 from pydantic import PostgresDsn, HttpUrl, BaseModel
 from pydantic_settings import BaseSettings
+from typing import ClassVar
 
 
 LogFormat = StrEnum("LogFormat", ["DEFAULT", "JSON"])
-EventProducer = StrEnum("EventProducer", ["NONE", "STDOUT", "KAFKA"])
 
 
 class AuthSettings(BaseModel):
@@ -32,7 +32,13 @@ class Settings(BaseSettings):
         database_uri: The URI of the PostgreSQL database
         cors_allowed_origins: The list of allowed CORS origins
         log_format: The log format
+        event_producer: The type of event producer: none, stdout, kafka
+        kafka_client_id: The Kafka client ID
+        kafka_bootstrap_servers: The Kafka bootstrap servers
+        kafka_sasl_username: The Kafka username
+        kafka_sasl_password: The Kafka password
     """
+    EventProducer: ClassVar = StrEnum("EventProducer", ["NONE", "STDOUT", "KAFKA"])
 
     auth_openid_configuration_url: HttpUrl | None = None
     auth: AuthSettings | None = None
@@ -44,6 +50,10 @@ class Settings(BaseSettings):
     log_format: LogFormat = "default"
 
     event_producer: EventProducer = "stdout"
+    kafka_client_id: str = "notes-service"
+    kafka_bootstrap_servers: str | None = None
+    kafka_sasl_username: str | None = None
+    kafka_sasl_password: str | None = None
 
     def __hash__(self):
         return 0

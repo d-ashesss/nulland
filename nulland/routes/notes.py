@@ -13,7 +13,7 @@ from nulland.schemas.auth import User
 from nulland.schemas.notes import Note
 from nulland.schemas.notes import NoteCreate
 from nulland.schemas.notes import NoteUpdate
-from nulland import events
+from nulland.events import get_emitter, EventEmmiter
 
 
 router = APIRouter()
@@ -24,6 +24,7 @@ def create_note(
     note: NoteCreate,
     user: Annotated[User, Depends(get_current_user)],
     db: Annotated[Session, Depends(get_db)],
+    events: Annotated[EventEmmiter, Depends(get_emitter)],
 ):
     """Create a note owned by the current user."""
     db_note = crud_notes.create_user_note(note, user, db=db)
@@ -67,6 +68,7 @@ def update_note(
     note: NoteUpdate,
     user: Annotated[User, Depends(get_current_user)],
     db: Annotated[Session, Depends(get_db)],
+    events: Annotated[EventEmmiter, Depends(get_emitter)],
 ):
     """Update single note by id."""
     db_note = crud_notes.get_user_note_by_id(note_id, user, db=db)
@@ -86,6 +88,7 @@ def delete_note(
     note_id: uuid.UUID,
     user: Annotated[User, Depends(get_current_user)],
     db: Annotated[Session, Depends(get_db)],
+    events: Annotated[EventEmmiter, Depends(get_emitter)],
 ):
     """Delete single note by id."""
     db_note = crud_notes.get_user_note_by_id(note_id, user, db=db)
