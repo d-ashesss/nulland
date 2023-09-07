@@ -3,11 +3,11 @@ from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from .db.session import init_db
-from .routes import auth
-from .routes import notes
-from .logging import init_logging
-from .config import settings
+from nulland.db.session import init_db
+from nulland.routes import auth
+from nulland.routes import notes
+from nulland.logging import init_logging
+from nulland.config import settings
 
 
 @asynccontextmanager

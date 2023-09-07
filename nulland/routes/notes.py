@@ -9,11 +9,11 @@ from typing import Annotated
 from nulland.auth import get_current_user
 from nulland.crud import crud_notes
 from nulland.db.session import get_db
+from nulland.events import get_emitter, EventEmmiter
 from nulland.schemas.auth import User
 from nulland.schemas.notes import Note
 from nulland.schemas.notes import NoteCreate
 from nulland.schemas.notes import NoteUpdate
-from nulland.events import get_emitter, EventEmmiter
 
 
 router = APIRouter()

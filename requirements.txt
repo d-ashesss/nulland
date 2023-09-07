@@ -9,3 +9,4 @@ python-json-logger >= 2.0, < 3.0
 python-multipart
 sqlalchemy >= 2.0.0, < 3.0.0
 uvicorn >= 0.23.2, < 0.24.0
+confluent_kafka >= 2.2, < 3.0
