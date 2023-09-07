@@ -2,12 +2,12 @@ import logging
 
 from pythonjsonlogger import jsonlogger
 
-from .config import settings, LogFormat
+from .config import settings
 
 
 def init_logging():
     log_handlers = None
-    if settings.log_format == LogFormat.JSON:
+    if settings.log_format == settings.LogFormat.JSON:
         handler = logging.StreamHandler()
         formatter = jsonlogger.JsonFormatter(
             "%(levelname)s %(name)s %(message)s",

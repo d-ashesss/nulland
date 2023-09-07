@@ -6,9 +6,6 @@ from pydantic_settings import BaseSettings
 from typing import ClassVar
 
 
-LogFormat = StrEnum("LogFormat", ["DEFAULT", "JSON"])
-
-
 class AuthSettings(BaseModel):
     """Authentication settings retrieved from OIDC configuration URL.
 
@@ -31,13 +28,14 @@ class Settings(BaseSettings):
         auth: The authentication settings
         database_uri: The URI of the PostgreSQL database
         cors_allowed_origins: The list of allowed CORS origins
-        log_format: The log format
+        log_format: The log format: default, json
         event_producer: The type of event producer: none, stdout, kafka
         kafka_client_id: The Kafka client ID
         kafka_bootstrap_servers: The Kafka bootstrap servers
         kafka_sasl_username: The Kafka username
         kafka_sasl_password: The Kafka password
     """
+    LogFormat: ClassVar = StrEnum("LogFormat", ["DEFAULT", "JSON"])
     EventProducer: ClassVar = StrEnum("EventProducer", ["NONE", "STDOUT", "KAFKA"])
 
     auth_openid_configuration_url: HttpUrl | None = None
@@ -47,9 +45,9 @@ class Settings(BaseSettings):
 
     cors_allowed_origins: list[str] = ["*"]
 
-    log_format: LogFormat = "default"
+    log_format: LogFormat = LogFormat.DEFAULT
 
-    event_producer: EventProducer = "stdout"
+    event_producer: EventProducer = EventProducer.STDOUT
     kafka_client_id: str = "notes-service"
     kafka_bootstrap_servers: str | None = None
     kafka_sasl_username: str | None = None
