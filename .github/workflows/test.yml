@@ -43,7 +43,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Create database
       run: |
-        alemic upgrade head
+        alembic upgrade head
       env:
         DATABASE_URI: postgresql://postgres:mah-password@localhost/
     - name: Test with pytest
