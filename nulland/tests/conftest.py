@@ -15,6 +15,3 @@ def db():
 def client():
     with TestClient(app) as c:
         yield c
-
-
-session.init_db()
