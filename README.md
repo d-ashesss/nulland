@@ -7,6 +7,27 @@ REST API backend for note taking application.
 [![latest tag](https://img.shields.io/github/v/tag/d-ashesss/nulland?include_prereleases&sort=semver)](https://github.com/d-ashesss/nulland/tags)
 ![feline reference](https://img.shields.io/badge/may%20contain%20cat%20fur-%F0%9F%90%88-blueviolet)
 
+## Running the app
+
+To run the app first you must install the dependencies from requirements.txt then use Uvicorn to run the app.
+
+```bash
+pip install -r requirements.txt
+python -m uvicorn app.main:app
+```
+
+Alternalively, to run in Docker (provide environment variables as needed):
+
+```bash
+docker build -t nulland .
+docker run -p 8000:8000 nulland
+```
+
+Or even with docker compose, configure environment in `docker-compose.override.yml`, then simply run:
+```bash
+docker-compose up
+```
+
 ## Configuration
 
 ### Authentication
@@ -20,6 +41,10 @@ The API uses PostgreSQL database. The connection string must be passed in the `D
 ### Logging
 
 To get the log format compatible with Google Cloud structured logging, set the `LOG_FORMAT` environment variable to `json`.
+
+### Event logging
+
+Application is able to post events to Kafka topic. To configure this feature set `EVENT_PRODUCER` environment variable to `kafka` and the hostname of Kafka server in `KAFKA_BOOTSTRAP_SERVERS` variable. Additionaly, `KAFKA_SASL_USERNAME` and `KAFKA_SASL_PASSWORD` must be set if Kafka server requires authentication.
 
 ### CORS
 
