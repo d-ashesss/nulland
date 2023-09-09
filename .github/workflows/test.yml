@@ -33,7 +33,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest
+        pip install flake8 pytest pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
@@ -48,6 +48,6 @@ jobs:
         DATABASE_URI: postgresql://postgres:mah-password@localhost/
     - name: Test with pytest
       run: |
-        pytest
+        pytest --cov=nulland
       env:
         DATABASE_URI: postgresql://postgres:mah-password@localhost/
