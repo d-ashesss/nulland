@@ -1,0 +1,14 @@
+.git
+
+Dockerfile
+docker-compose*.yml
+
+.vscode
+.idea
+*.iml
+
+**/__pycache__
+.pytest_cache
+venv/
+.env
+*/tests/
