@@ -19,8 +19,7 @@ python -m uvicorn app.main:app
 Alternalively, to run in Docker (provide environment variables as needed):
 
 ```bash
-docker build -t nulland .
-docker run -p 8000:8000 nulland
+docker run -p 8000:8000 ashesss/nulland:latest
 ```
 
 Or even with docker compose, configure environment in `docker-compose.override.yml`, then simply run:

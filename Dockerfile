@@ -1,5 +1,7 @@
 FROM python:3.11-slim-bookworm
 
+ENV PYTHONUNBUFFERED=1
+
 RUN pip install --upgrade pip setuptools
 
 COPY requirements.txt /app/requirements.txt
