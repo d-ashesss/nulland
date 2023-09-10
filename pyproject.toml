@@ -3,7 +3,7 @@
 
 [tool.poetry]
 name = "nulland"
-version = "0.1.0"
+version = "0.2.0"
 description = "Note-taking REST API with Python and FastAPI."
 authors = [
     "Serhii Mashentsev <serhii@mashentsev.me>",
