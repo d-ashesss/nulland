@@ -21,7 +21,7 @@ async def lifespan(_: FastAPI):
 app = FastAPI(
     title="Nulland",
     summary="Note-taking REST API with Python and FastAPI.",
-    version="0.1.0",
+    version="0.2.0",
     license_info={
         "name": "MIT License",
     },
