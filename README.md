@@ -19,10 +19,10 @@ python -m uvicorn app.main:app
 Alternalively, to run in Docker (provide environment variables as needed):
 
 ```bash
-docker run -p 8000:8000 ashesss/nulland:latest
+docker run -p 8000:8000 -e 'DATABASE_URI=postgresql://postgres:postpwd@localhost' -e 'AUTH_OPENID_CONFIGURATION_URL=https://accounts.google.com/.well-known/openid-configuration' ashesss/nulland:latest
 ```
 
-Or even with docker compose, configure environment in `docker-compose.override.yml`, then simply run:
+Or even with docker compose, configure environment in `docker-compose.override.yml` (see [example](https://github.com/d-ashesss/nulland/wiki/example-docker%E2%80%90compose.override.yml)), then simply run:
 ```bash
 docker-compose up
 ```

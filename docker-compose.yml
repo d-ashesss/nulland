@@ -6,8 +6,3 @@ services:
       context: .
       dockerfile: Dockerfile
     image: ashesss/nulland:latest
-    # ports:
-      # - "8000:8000"
-    # environment:
-      # "DATABASE_URI": "postgresql://postgres:postpwd@localhost/"
-      # "AUTH_OPENID_CONFIGURATION_URL": "https://accounts.google.com/.well-known/openid-configuration"
